@@ -1,0 +1,60 @@
+{
+  "version": "2",
+  "templates": [
+    {
+      "type": 3,
+      "title": "Dynamic DNS",
+      "description": "Dynamic DNS keeps DNS updated with a site's correct IP address, even if it changes frequently.",
+      "repository": {
+        "url": "https://github.com/fredrik-sy/fcos",
+        "stackfile": "portainer/templates/stacks/ddns/docker-compose.yml"
+      },
+      "name": "ddns",
+      "logo": "https://raw.githubusercontent.com/fredrik-sy/fcos/master/portainer/templates/stacks/ddns/favicon.png"
+    },
+    {
+      "type": 3,
+      "title": "File Browser",
+      "description": "File Browser is a create-your-own-cloud-kind of software where you can install it on a server, direct it to a path and then access your files through a nice web interface.",
+      "repository": {
+        "url": "https://github.com/fredrik-sy/fcos",
+        "stackfile": "portainer/templates/stacks/filebrowser/docker-compose.yml"
+      },
+      "name": "filebrowser",
+      "logo": "https://raw.githubusercontent.com/fredrik-sy/fcos/master/portainer/templates/stacks/filebrowser/favicon.png"
+    },
+    {
+      "type": 3,
+      "title": "Jellyfin",
+      "description": "The volunteer-built media solution that puts you in control of your media. Stream to any device from your own server, with no strings attached.",
+      "repository": {
+        "url": "https://github.com/fredrik-sy/fcos",
+        "stackfile": "portainer/templates/stacks/jellyfin/docker-compose.yml"
+      },
+      "name": "jellyfin",
+      "logo": "https://raw.githubusercontent.com/fredrik-sy/fcos/master/portainer/templates/stacks/jellyfin/favicon.png"
+    },
+    {
+      "type": 3,
+      "title": "NGINX",
+      "description": "NGINX accelerates content and application delivery, improves security, and facilitates availability and scalability for the busiest websites on the Internet.",
+      "repository": {
+        "url": "https://github.com/fredrik-sy/fcos",
+        "stackfile": "portainer/templates/stacks/nginx/docker-compose.yml"
+      },
+      "name": "nginx",
+      "logo": "https://raw.githubusercontent.com/fredrik-sy/fcos/master/portainer/templates/stacks/nginx/favicon.png"
+    },
+    {
+      "type": 3,
+      "title": "qBittorrent-nox",
+      "description": "The qBittorrent project aims to provide an open-source software alternative to µTorrent.",
+      "repository": {
+        "url": "https://github.com/fredrik-sy/fcos",
+        "stackfile": "portainer/templates/stacks/qbittorrent-nox/docker-compose.yml"
+      },
+      "name": "qbittorrent-nox",
+      "logo": "https://raw.githubusercontent.com/fredrik-sy/fcos/master/portainer/templates/stacks/qbittorrent-nox/favicon.png"
+    }
+  ]
+}

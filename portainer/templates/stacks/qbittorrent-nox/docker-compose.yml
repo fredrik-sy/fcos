@@ -1,0 +1,46 @@
+version: "2"
+
+services:
+  qbittorrent-nox:
+    image: qbittorrentofficial/qbittorrent-nox:latest
+    container_name: qbittorrent-nox
+    environment:
+      - QBT_EULA=accept
+      - QBT_VERSION=latest
+      - QBT_WEBUI_PORT=9880
+    network_mode: container:wireguard
+    read_only: false
+    restart: unless-stopped
+    stop_grace_period: 30m
+    tmpfs: /tmp
+    tty: true
+    volumes:
+      - config:/config
+      - /var/home/core/Downloads:/downloads:shared,z
+
+  wireguard:
+    image: linuxserver/wireguard:latest
+    cap_add:
+      - NET_ADMIN
+    container_name: wireguard
+    entrypoint: /bin/bash -c "unlink /etc/wireguard; curl -o /usr/bin/mullvad-wg https://raw.githubusercontent.com/mullvad/mullvad-wg.sh/main/mullvad-wg.sh && chmod 0755 /usr/bin/mullvad-wg && sed -i '75i \\\\t\\tTable = off' /usr/bin/mullvad-wg && echo $$ACCOUNT | mullvad-wg && cp $(find /etc/wireguard -name se-mma-wg-* | shuf -n 1) /config/wg_confs/; /init"
+    environment:
+      - ACCOUNT
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Stockholm
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 9880:9880
+      - 51820:51820/udp
+    restart: unless-stopped
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=0
+    volumes:
+      - wireguard:/etc/wireguard
+
+volumes:
+  config:
+  wireguard:

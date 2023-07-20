@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+  ddns:
+    image: ghcr.io/fredrik-sy/ddns:latest
+    container_name: ddns
+    environment:
+      - API_KEY
+      - ZONE_ID
+    network_mode: bridge
+    restart: unless-stopped

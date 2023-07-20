@@ -1,0 +1,32 @@
+version: "2"
+
+services:
+  qbittorrent-nox:
+    image: ghcr.io/fredrik-sy/qbittorrent-nox:latest
+    cap_add:
+      - NET_ADMIN
+    container_name: qbittorrent-nox
+    environment:
+      - ACCOUNT
+      - QBT_EULA=accept
+      - QBT_VERSION=latest
+      - QBT_WEBUI_PORT=9880
+    network_mode: bridge
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 9880:9880
+    read_only: false
+    restart: unless-stopped
+    stop_grace_period: 30m
+    tmpfs: /tmp
+    tty: true
+    volumes:
+      - config:/config
+      - downloads:/downloads
+      - wireguard:/etc/wireguard
+
+volumes:
+  config:
+  downloads:
+  wireguard:

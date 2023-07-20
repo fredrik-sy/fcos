@@ -1,0 +1,26 @@
+name: Fedora CoreOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      config:
+        description: Butane Config
+        options:
+          - Generic.bu
+        required: true
+        type: choice
+
+jobs:
+  live:
+    name: Live DVD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker run --rm -v $GITHUB_WORKSPACE/${{ inputs.config }}:/config.bu:z quay.io/coreos/butane:release --strict /config.bu > config.ign
+      - run: docker run --security-opt label=disable --pull=always --rm -v $GITHUB_WORKSPACE:/data -w /data quay.io/coreos/coreos-installer:release download -f iso
+      - run: docker run --security-opt label=disable --pull=always --rm -v $GITHUB_WORKSPACE:/data -w /data quay.io/coreos/coreos-installer:release iso customize --live-karg-append coreos.liveiso.fromram --live-ignition config.ign fedora-coreos-*-live.x86_64.iso
+      - run: sudo chown $USER:$USER fedora-coreos-*-live.x86_64.iso
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.config }}
+          path: fedora-coreos-*-live.x86_64.iso

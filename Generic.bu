@@ -1,0 +1,94 @@
+variant: fcos
+version: 1.5.0
+storage:
+  disks:
+    - device: /dev/sda
+      wipe_table: true
+      partitions:
+        - label: var
+    - device: /dev/sdb
+      wipe_table: true
+      partitions:
+        - label: core
+    - device: /dev/sdc
+      wipe_table: true
+      partitions:
+        - label: data
+  filesystems:
+    - device: /dev/disk/by-partlabel/var
+      format: ext4
+      path: /var
+      label: var
+      with_mount_unit: true
+    - device: /dev/disk/by-partlabel/core
+      format: ext4
+      path: /var/home/core
+      label: core
+      with_mount_unit: true
+    - device: /dev/disk/by-partlabel/data
+      format: ext4
+      path: /var/mnt/data
+      label: data
+      with_mount_unit: true
+  files:
+    - path: /etc/modules-load.d/wireguard.conf
+      contents:
+        inline: |
+          wireguard
+    - path: /etc/vconsole.conf
+      contents:
+        inline: |
+          KEYMAP=se
+  directories:
+    - path: /var/home/core/Documents
+      user:
+        name: core
+      group:
+        name: core
+    - path: /var/home/core/Downloads
+      user:
+        name: core
+      group:
+        name: core
+    - path: /var/home/core/Music
+      user:
+        name: core
+      group:
+        name: core
+    - path: /var/home/core/Pictures
+      user:
+        name: core
+      group:
+        name: core
+    - path: /var/home/core/Videos
+      user:
+        name: core
+      group:
+        name: core
+    - path: /var/mnt/data
+      user:
+        name: core
+      group:
+        name: core
+  links:
+    - path: /etc/localtime
+      target: /usr/share/zoneinfo/Europe/Stockholm
+systemd:
+  units:
+    - name: docker.portainer.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Portainer Server
+        Requires=docker.service network.target network-online.target
+        After=docker.service
+
+        [Service]
+        ExecStartPre=/usr/bin/docker pull portainer/portainer-ce
+        ExecStart=/usr/bin/docker run --name portainer --privileged -p 9000:9000 --rm -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
+        ExecStop=/usr/bin/docker stop portainer
+        SuccessExitStatus=143
+        TimeoutSec=0
+
+        [Install]
+        WantedBy=multi-user.target

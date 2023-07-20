@@ -1,0 +1,20 @@
+version: "2"
+
+services:
+  nginx:
+    image: ghcr.io/fredrik-sy/nginx:latest
+    container_name: nginx
+    environment:
+      - NGINX_HOST=connectcloud.se
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    network_mode: bridge
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+
+volumes:
+  letsencrypt:

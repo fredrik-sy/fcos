@@ -1,0 +1,23 @@
+version: "2"
+
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:s6
+    container_name: filebrowser
+    entrypoint: /bin/bash -c "touch /database/filebrowser.db && chown 1000:1000 /database/filebrowser.db && /init"
+    environment:
+      - PGID=1000
+      - PUID=1000
+    network_mode: bridge
+    ports:
+      - 9080:80
+    restart: unless-stopped
+    volumes:
+      - config:/config
+      - database:/database
+      - /var/home/core:/srv/core:shared,z
+      - /var/mnt/data:/srv/core/Videos:shared,z
+
+volumes:
+  config:
+  database:

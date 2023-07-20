@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    devices:
+      - /dev/dri:/dev/dri
+    network_mode: bridge
+    ports:
+      - 8096:8096
+    restart: unless-stopped
+    user: 1000:1000
+    volumes:
+      - cache:/cache
+      - config:/config
+      - /var/mnt/data:/media:shared,z
+
+volumes:
+  cache:
+  config:
